@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  beatmaps-service:
+    image: beatmaps-service:latest
+    restart: always
+    network_mode: "host"
+    environment:
+      - ClientId=${ClientId}
+      - ClientSecret=${ClientSecret}
+      - RedisConnectionString=${RedisConnectionString}
+    volumes:
+      - ./scripts:/scripts

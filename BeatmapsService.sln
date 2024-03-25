@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BA267E32-C2FD-486C-8552-CC48EF44F942}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatmapsService", "src\BeatmapsService\BeatmapsService.csproj", "{90888579-27E7-46FE-8B73-887DDECFE01E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{90888579-27E7-46FE-8B73-887DDECFE01E} = {BA267E32-C2FD-486C-8552-CC48EF44F942}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90888579-27E7-46FE-8B73-887DDECFE01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90888579-27E7-46FE-8B73-887DDECFE01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90888579-27E7-46FE-8B73-887DDECFE01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90888579-27E7-46FE-8B73-887DDECFE01E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
