@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace BeatmapsService.Services;
 
-public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmapOptions) : IOsuService
+public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmapOptions, ILogger<OsuService> logger) : IOsuService
 {
     private string? _accessToken;
     private DateTimeOffset? _expiresAt;
@@ -33,6 +33,9 @@ public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmap
             beatmapId,
             _accessToken,
             cancellationToken);
+        
+        if (beatmap is not null)
+            logger.LogInformation("Served beatmap ID {@BeatmapId} from API v2", beatmapId);
 
         return beatmap;
     }
@@ -45,6 +48,9 @@ public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmap
             beatmapsetId,
             _accessToken,
             cancellationToken);
+        
+        if (beatmapset is not null)
+            logger.LogInformation("Served beatmapset ID {@BeatmapsetId} from API v2", beatmapsetId);
 
         return beatmapset;
     }

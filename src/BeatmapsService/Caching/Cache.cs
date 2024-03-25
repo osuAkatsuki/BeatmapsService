@@ -21,7 +21,7 @@ public class Cache(IDistributedCache distributedCache) : ICache
         await distributedCache.SetAsync(key, byteData, cancellationToken);
     }
 
-    public async Task<T?> GetOrCreateAsync<T>(
+    public async Task<(T? Item, bool Created)> GetOrCreateAsync<T>(
         string key,
         Func<DistributedCacheEntryOptions, Task<T?>> factory,
         CancellationToken cancellationToken = default)
@@ -29,7 +29,7 @@ public class Cache(IDistributedCache distributedCache) : ICache
     {
         var cachedRecord = await GetAsync<T>(key, cancellationToken);
         if (cachedRecord is not null)
-            return cachedRecord;
+            return (cachedRecord, false);
 
         var options = new DistributedCacheEntryOptions();
         
@@ -37,6 +37,6 @@ public class Cache(IDistributedCache distributedCache) : ICache
         if (record is not null)
             await SetAsync(key, record, cancellationToken);
 
-        return record;
+        return (record, true);
     }
 }

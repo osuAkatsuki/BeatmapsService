@@ -5,14 +5,14 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace BeatmapsService.Services;
 
-public class CachingOsuService(IOsuService osuService, ICache cache) : IOsuService
+public class CachingOsuService(IOsuService osuService, ICache cache, ILogger<CachingOsuService> logger) : IOsuService
 {
     private const string BeatmapKey = "beatmaps";
     private const string BeatmapsetKey = "beatmapsets";
 
-    public Task<BeatmapExtended?> FindBeatmapByIdAsync(int beatmapId, CancellationToken cancellationToken = default)
+    public async Task<BeatmapExtended?> FindBeatmapByIdAsync(int beatmapId, CancellationToken cancellationToken = default)
     {
-        return cache.GetOrCreateAsync(
+        var (item, created) = await cache.GetOrCreateAsync(
             $"{BeatmapKey}/{beatmapId}",
             async options =>
             {
@@ -25,11 +25,16 @@ public class CachingOsuService(IOsuService osuService, ICache cache) : IOsuServi
                 return response;
             },
             cancellationToken);
+        
+        if (!created)
+            logger.LogInformation("Served beatmap ID {@BeatmapId} from cache", beatmapId);
+
+        return item;
     }
 
-    public Task<BeatmapsetExtended?> FindBeatmapsetByIdAsync(int beatmapsetId, CancellationToken cancellationToken = default)
+    public async Task<BeatmapsetExtended?> FindBeatmapsetByIdAsync(int beatmapsetId, CancellationToken cancellationToken = default)
     {
-        return cache.GetOrCreateAsync(
+        var (item, created) = await cache.GetOrCreateAsync(
             $"{BeatmapsetKey}/{beatmapsetId}",
             async options =>
             {
@@ -42,5 +47,10 @@ public class CachingOsuService(IOsuService osuService, ICache cache) : IOsuServi
                 return response;
             },
             cancellationToken);
+        
+        if (!created)
+            logger.LogInformation("Served beatmapset ID {@BeatmapsetId} from cache", beatmapsetId);
+        
+        return item;
     }
 }
