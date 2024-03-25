@@ -6,6 +6,7 @@ services:
     restart: always
     network_mode: "host"
     environment:
+      - ServicePort=${ServicePort}
       - ClientId=${ClientId}
       - ClientSecret=${ClientSecret}
       - RedisConnectionString=${RedisConnectionString}
