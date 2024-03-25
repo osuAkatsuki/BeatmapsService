@@ -11,7 +11,7 @@ public class ResilientOsuAdapter(IOsuAdapter osuAdapter) : IOsuAdapter
         var resiliencePipeline = new ResiliencePipelineBuilder<OAuthResponse>()
             .AddRetry(new RetryStrategyOptions<OAuthResponse>
             {
-                MaxRetryAttempts = 10,
+                MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 UseJitter = true,
                 Delay = TimeSpan.FromSeconds(1),
@@ -32,7 +32,7 @@ public class ResilientOsuAdapter(IOsuAdapter osuAdapter) : IOsuAdapter
         var resiliencePipeline = new ResiliencePipelineBuilder<BeatmapExtended?>()
             .AddRetry(new RetryStrategyOptions<BeatmapExtended?>
             {
-                MaxRetryAttempts = 10,
+                MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 UseJitter = true,
                 Delay = TimeSpan.FromSeconds(1),
@@ -53,7 +53,7 @@ public class ResilientOsuAdapter(IOsuAdapter osuAdapter) : IOsuAdapter
         var resiliencePipeline = new ResiliencePipelineBuilder<BeatmapsetExtended?>()
             .AddRetry(new RetryStrategyOptions<BeatmapsetExtended?>
             {
-                MaxRetryAttempts = 10,
+                MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 UseJitter = true,
                 Delay = TimeSpan.FromSeconds(1),

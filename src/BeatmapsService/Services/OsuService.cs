@@ -7,8 +7,14 @@ namespace BeatmapsService.Services;
 
 public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmapOptions, ILogger<OsuService> logger) : IOsuService
 {
+    private const int MaxRequestCountPerMinute = 100;
+    private static readonly TimeSpan BackoffTime = TimeSpan.FromSeconds(5);
+
     private string? _accessToken;
     private DateTimeOffset? _expiresAt;
+
+    private DateTimeOffset? _requestsStart;
+    private int _requestCount;
 
     [MemberNotNull(nameof(_accessToken))]
     private async Task Authenticate(CancellationToken cancellationToken = default)
@@ -25,9 +31,33 @@ public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmap
         _expiresAt = DateTimeOffset.UtcNow.AddSeconds(oauthResponse.ExpiresIn);
     }
 
+    private async Task WaitForReady(CancellationToken cancellationToken = default)
+    {
+        if (_requestsStart is null)
+        {
+            _requestsStart = DateTimeOffset.UtcNow;
+            _requestCount = 0;
+        }
+
+        if (_requestCount > MaxRequestCountPerMinute)
+        {
+            logger.LogWarning("Backing off due to hitting {@RequestCount} in the last minute", _requestCount);
+            await Task.Delay(BackoffTime, cancellationToken);
+        }
+
+        if ((DateTimeOffset.UtcNow - _requestsStart) > TimeSpan.FromMinutes(1))
+        {
+            _requestsStart = DateTimeOffset.UtcNow;
+            _requestCount = 0;
+        }
+        
+        _requestCount += 1;
+    }
+
     public async Task<BeatmapExtended?> FindBeatmapByIdAsync(int beatmapId, CancellationToken cancellationToken = default)
     {
         await Authenticate(cancellationToken);
+        await WaitForReady(cancellationToken);
 
         var beatmap = await osuAdapter.FindBeatmapByIdAsync(
             beatmapId,
@@ -43,6 +73,7 @@ public class OsuService(IOsuAdapter osuAdapter, IOptions<BeatmapOptions> beatmap
     public async Task<BeatmapsetExtended?> FindBeatmapsetByIdAsync(int beatmapsetId, CancellationToken cancellationToken = default)
     {
         await Authenticate(cancellationToken);
+        await WaitForReady(cancellationToken);
 
         var beatmapset = await osuAdapter.FindBeatmapsetByIdAsync(
             beatmapsetId,
