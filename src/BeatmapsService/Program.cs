@@ -15,6 +15,8 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+var beatmapOptions = builder.Configuration.Get<BeatmapOptions>()!;
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,7 +31,6 @@ builder.Services.Decorate<IOsuService, CachingOsuService>();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    var beatmapOptions = builder.Configuration.Get<BeatmapOptions>()!;
     options.Configuration = beatmapOptions.RedisConnectionString;
 });
 
@@ -53,4 +54,4 @@ app.MapControllers();
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
 
-app.Run();
+app.Run($"http://127.0.0.1:{beatmapOptions.ServicePort}");
