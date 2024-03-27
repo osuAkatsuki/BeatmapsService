@@ -15,10 +15,12 @@ public class Cache(IDistributedCache distributedCache) : ICache
         return data;
     }
 
-    public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken = default)
+    public async Task SetAsync<T>(string key, T value, DistributedCacheEntryOptions? options = null, CancellationToken cancellationToken = default)
     {
         var byteData = JsonSerializer.SerializeToUtf8Bytes(value);
-        await distributedCache.SetAsync(key, byteData, cancellationToken);
+        options ??= new DistributedCacheEntryOptions();
+
+        await distributedCache.SetAsync(key, byteData, options, cancellationToken);
     }
 
     public async Task<(T? Item, bool Created)> GetOrCreateAsync<T>(
@@ -35,7 +37,7 @@ public class Cache(IDistributedCache distributedCache) : ICache
         
         var record = await factory(options);
         if (record is not null)
-            await SetAsync(key, record, cancellationToken);
+            await SetAsync(key, record, options, cancellationToken);
 
         return (record, true);
     }
