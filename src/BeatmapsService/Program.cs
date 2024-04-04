@@ -1,7 +1,8 @@
 using BeatmapsService;
-using BeatmapsService.Adapters;
+using BeatmapsService.Api;
 using BeatmapsService.Caching;
 using BeatmapsService.Services;
+using Refit;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICache, Cache>();
 
-builder.Services.AddSingleton<IOsuAdapter, OsuAdapter>();
-builder.Services.Decorate<IOsuAdapter, ResilientOsuAdapter>();
+builder.Services
+    .AddRefitClient<IOsuApi>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://osu.ppy.sh"));
+
+builder.Services.Decorate<IOsuApi, ResilientOsuApi>();
 
 builder.Services.AddSingleton<IOsuService, OsuService>();
 builder.Services.Decorate<IOsuService, CachingOsuService>();
