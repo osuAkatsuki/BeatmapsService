@@ -103,6 +103,10 @@ public class OsuService(IOsuApi osuApi, IOptions<BeatmapOptions> beatmapOptions,
         var rankedStatus = RankedStatusHelper.ConvertRankedStatus(status);
         var sort = RankedStatusHelper.GetRankedStatusSort(rankedStatus);
 
+        // if the user provided a query, relevance should always take priority
+        if (!string.IsNullOrWhiteSpace(query))
+            sort = "relevance_desc";
+
         var currentPage = page;
         var pagesRequired = (int)Math.Ceiling(pageSize / 50d);
 
