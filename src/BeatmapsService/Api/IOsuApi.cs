@@ -27,6 +27,7 @@ public interface IOsuApi
         [AliasAs("q")] string? query,
         [AliasAs("m")] int? mode,
         [AliasAs("s")] string? status,
+        string? sort,
         int page,
         [Authorize] string accessToken,
         CancellationToken cancellationToken = default);

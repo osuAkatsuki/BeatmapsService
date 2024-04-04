@@ -100,7 +100,8 @@ public class OsuService(IOsuApi osuApi, IOptions<BeatmapOptions> beatmapOptions,
     {
         await Authenticate(cancellationToken);
 
-        var rankedStatus = status is not null ? RankedHelper.ConvertRankedStatus(status.Value) : null;
+        var rankedStatus = RankedStatusHelper.ConvertRankedStatus(status);
+        var sort = RankedStatusHelper.GetRankedStatusSort(rankedStatus);
 
         var currentPage = page;
         var pagesRequired = (int)Math.Ceiling(pageSize / 50d);
@@ -117,6 +118,7 @@ public class OsuService(IOsuApi osuApi, IOptions<BeatmapOptions> beatmapOptions,
                 query,
                 mode,
                 rankedStatus,
+                sort,
                 currentPage,
                 _accessToken,
                 cancellationToken);

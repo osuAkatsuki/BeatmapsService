@@ -73,6 +73,7 @@ public class ResilientOsuApi(IOsuApi osuApi) : IOsuApi
         string? query,
         int? mode,
         string? status,
+        string? sort,
         int page,
         string accessToken,
         CancellationToken cancellationToken = default)
@@ -94,6 +95,7 @@ public class ResilientOsuApi(IOsuApi osuApi) : IOsuApi
                 query,
                 mode,
                 status,
+                sort,
                 page,
                 accessToken,
                 token),
