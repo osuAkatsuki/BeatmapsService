@@ -98,8 +98,6 @@ public class OsuService(IOsuApi osuApi, IOptions<BeatmapOptions> beatmapOptions,
         int page,
         CancellationToken cancellationToken = default)
     {
-        await Authenticate(cancellationToken);
-
         var rankedStatus = RankedStatusHelper.ConvertRankedStatus(status);
         var sort = RankedStatusHelper.GetRankedStatusSort(rankedStatus);
 
@@ -116,6 +114,7 @@ public class OsuService(IOsuApi osuApi, IOptions<BeatmapOptions> beatmapOptions,
         // this ensures page sizes greater than 50 will still work
         while (pagesRequired > 0)
         {
+            await Authenticate(cancellationToken);
             await WaitForReady(cancellationToken);
 
             var searchBeatmapsetResponse = await osuApi.SearchBeatmapsetsAsync(
