@@ -24,6 +24,6 @@ COPY scripts /scripts
 RUN chmod u+x /scripts/*
 
 RUN apt update && apt install -y openssl python3-pip
-RUN pip install --break-system-packages -i https://pypi2.akatsuki.gg/cmyui/dev akatsuki-cli
+RUN pip install --break-system-packages git+https://github.com/osuAkatsuki/akatsuki-cli
 
 ENTRYPOINT ["/scripts/bootstrap.sh"]
