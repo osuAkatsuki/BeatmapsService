@@ -66,4 +66,4 @@ app.MapControllers();
 app.UseExceptionHandler();
 app.MapHealthChecks("/_health");
 
-app.Run($"http://127.0.0.1:{beatmapOptions.ServicePort}");
+app.Run($"http://{beatmapOptions.ServiceHost}:{beatmapOptions.ServicePort}");
