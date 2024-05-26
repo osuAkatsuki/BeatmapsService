@@ -63,7 +63,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-app.UseHttpsRedirection();
 app.UseExceptionHandler();
 app.MapHealthChecks("/_health");
 
