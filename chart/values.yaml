@@ -2,7 +2,7 @@ apps:
   - name: beatmaps-service-api
     environment: production
     codebase: beatmaps-service
-    replicaCount: 2
+    replicaCount: 1
     container:
       image:
         repository: osuakatsuki/beatmaps-service
