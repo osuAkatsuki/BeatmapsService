@@ -2,7 +2,11 @@ apps:
   - name: beatmaps-service-api
     environment: production
     codebase: beatmaps-service
-    replicaCount: 1
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 80
     container:
       image:
         repository: osuakatsuki/beatmaps-service
