@@ -1,7 +1,7 @@
 apps:
-  - name: BeatmapsService-api
+  - name: beatmaps-service-api
     environment: production
-    codebase: BeatmapsService
+    codebase: beatmaps-service
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -9,7 +9,7 @@ apps:
       targetCPUUtilizationPercentage: 80
     container:
       image:
-        repository: osuakatsuki/BeatmapsService
+        repository: osuakatsuki/beatmaps-service
         tag: latest
       port: 80
       readinessProbe:
