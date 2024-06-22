@@ -1,13 +1,13 @@
 #!/usr/bin/make
 
 build:
-	docker build -t beatmaps-service:latest -t registry.digitalocean.com/akatsuki/beatmaps-service:latest .
+	docker build -t BeatmapsService:latest -t registry.digitalocean.com/akatsuki/BeatmapsService:latest .
 
 run:
-	docker-compose up beatmaps-service
+	docker-compose up BeatmapsService
 
 run-bg:
-	docker-compose up -d beatmaps-service
+	docker-compose up -d BeatmapsService
 
 stop:
 	docker-compose down

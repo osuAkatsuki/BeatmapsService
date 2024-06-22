@@ -1,8 +1,8 @@
 version: "3.3"
 
 services:
-  beatmaps-service:
-    image: beatmaps-service:latest
+  BeatmapsService:
+    image: BeatmapsService:latest
     restart: always
     network_mode: "host"
     environment:
