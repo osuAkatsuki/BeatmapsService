@@ -8,7 +8,7 @@ fi
 
 if [[ $PULL_SECRETS_FROM_VAULT -eq 1 ]]; then
   echo "Fetching secrets from vault"
-  akatsuki vault get beatmaps-service $APP_ENV -o .env
+  akatsuki vault get BeatmapsService $APP_ENV -o .env
   echo "Fetched secrets from vault"
   source .env
   echo "Sourced secrets from vault"
