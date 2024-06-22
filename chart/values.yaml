@@ -1,7 +1,7 @@
 apps:
-  - name: beatmaps-service-api
+  - name: legacy-beatmaps-service-api
     environment: production
-    codebase: beatmaps-service
+    codebase: legacy-beatmaps-service
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -9,7 +9,7 @@ apps:
       targetCPUUtilizationPercentage: 80
     container:
       image:
-        repository: osuakatsuki/beatmaps-service
+        repository: osuakatsuki/legacy-beatmaps-service
         tag: latest
       port: 80
       readinessProbe:
